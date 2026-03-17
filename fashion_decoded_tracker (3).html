@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fashion Decoded 2026 — Event Command Centre</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  /* Mapp official brand palette from template */
+  --black:      #1a1726;
+  --surface:    #221f33;
+  --surface2:   #2b2449;
+  --surface3:   #332d58;
+  --surface4:   #3d3666;
+
+  --cyan:       #00E9C2;
+  --cyan-mid:   #00c9a8;
+  --cyan-dim:   rgba(0,233,194,0.12);
+  --cyan-bdr:   rgba(0,233,194,0.25);
+  --cyan-light: #7FF4E0;
+
+  --purple:     #8D77F7;
+  --purple-dim: rgba(141,119,247,0.12);
+  --purple-bdr: rgba(141,119,247,0.22);
+  --purple-lt:  #BCACF8;
+
+  --pink:       #FC4482;
+  --pink-dim:   rgba(252,68,130,0.12);
+  --pink-bdr:   rgba(252,68,130,0.22);
+  --pink-lt:    #FF87AF;
+
+  --cream:      #F9F6F2;
+  --warm:       #F1ECE3;
+  --stone:      #C1BBB1;
+  --muted:      #6E6259;
+  --muted2:     #9e9590;
+  --body:       #C1BBB1;
+  --rule:       rgba(141,119,247,0.18);
+
+  --red:        #e04040;
+  --red-dim:    rgba(224,64,64,0.12);
+  --green:      #00E9C2;
+  --green-dim:  rgba(0,233,194,0.12);
+  --amber:      #FFA500;
+  --amber-dim:  rgba(255,165,0,0.12);
+}
+
+body{background:var(--black);color:var(--body);font-family:'Inter',sans-serif;font-size:13px;line-height:1.55;min-height:100vh;}
+
+/* HEADER */
+.header{
+  background:linear-gradient(135deg,#221f33 0%,#1a1726 60%);
+  border-bottom:1px solid var(--cyan-bdr);
+  padding:24px 32px 20px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,233,194,0.06) 0%,transparent 70%);pointer-events:none;}
+.eyebrow{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:6px;font-weight:600;}
+.event-title{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--cream);letter-spacing:-0.5px;line-height:1.05;}
+.event-meta{font-size:11px;color:var(--muted2);margin-top:6px;}
+.header-right{text-align:right;}
+.cd-num{font-family:'Syne',sans-serif;font-size:46px;font-weight:800;color:var(--cyan);line-height:1;}
+.cd-sub{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+
+/* NAV */
+.nav{display:flex;border-bottom:1px solid var(--rule);background:var(--surface);padding:0 32px;overflow-x:auto;}
+.nav-tab{font-family:'Inter',sans-serif;font-size:10px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted2);cursor:pointer;border:none;border-bottom:2px solid transparent;background:transparent;padding:12px 18px;white-space:nowrap;transition:color .15s,border-color .15s;}
+.nav-tab:hover{color:var(--cream);}
+.nav-tab.active{color:var(--cyan);border-bottom-color:var(--cyan);}
+
+/* CONTENT */
+.content{padding:24px 32px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:16px;position:relative;overflow:hidden;}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+.kpi.c-cyan::after{background:var(--cyan);}
+.kpi.c-red::after{background:var(--red);}
+.kpi.c-green::after{background:var(--cyan);}
+.kpi.c-amber::after{background:var(--amber);}
+.kpi.c-purple::after{background:var(--purple);}
+.kpi.c-dim::after{background:var(--surface4);}
+.kpi-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500;}
+.kpi-val{font-family:'Syne',sans-serif;font-size:34px;font-weight:700;line-height:1;color:var(--cream);}
+.kpi-val.cyan{color:var(--cyan);}
+.kpi-val.red{color:var(--red);}
+.kpi-val.green{color:var(--cyan);}
+.kpi-val.amber{color:var(--amber);}
+.kpi-val.purple{color:var(--purple);}
+.kpi-sub{font-size:10.5px;color:var(--muted2);margin-top:5px;}
+.kpi-bar{height:3px;background:var(--surface3);border-radius:2px;margin-top:10px;overflow:hidden;}
+.kpi-bar-fill{height:100%;border-radius:2px;}
+.bar-cyan{background:var(--cyan);}
+.bar-red{background:var(--red);}
+.bar-amber{background:var(--amber);}
+.bar-purple{background:var(--purple);}
+
+/* ALERTS */
+.alert{border-radius:3px;padding:11px 14px;margin-bottom:16px;font-size:12px;display:flex;gap:10px;align-items:flex-start;}
+.alert-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.alert-red{background:var(--red-dim);border:1px solid rgba(224,64,64,0.22);color:#f07070;}
+.alert-cyan{background:var(--cyan-dim);border:1px solid var(--cyan-bdr);color:var(--cyan-light);}
+.alert-info{background:rgba(141,119,247,0.07);border:1px solid var(--purple-bdr);color:var(--purple-lt);}
+
+/* SECTION TITLE */
+.section-title{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;}
+.badge{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;padding:2px 8px;border-radius:2px;letter-spacing:.5px;}
+.badge-red{background:var(--red-dim);color:#f07070;}
+.badge-amber{background:var(--amber-dim);color:var(--amber);}
+.badge-cyan{background:var(--cyan-dim);color:var(--cyan);}
+.badge-green{background:var(--green-dim);color:var(--cyan);}
+.badge-purple{background:var(--purple-dim);color:var(--purple-lt);}
+
+/* PANEL */
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:16px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* TAGS */
+.tag{display:inline-block;font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 8px;border-radius:2px;white-space:nowrap;}
+.tag-red{background:var(--red-dim);color:#f07070;}
+.tag-cyan{background:var(--cyan-dim);color:var(--cyan);}
+.tag-amber{background:var(--amber-dim);color:var(--amber);}
+.tag-green{background:var(--green-dim);color:var(--cyan-light);}
+.tag-purple{background:var(--purple-dim);color:var(--purple-lt);}
+.tag-pink{background:var(--pink-dim);color:var(--pink-lt);}
+.tag-muted{background:rgba(255,255,255,.05);color:var(--muted2);}
+
+/* WEEK TABLE */
+.week-table{width:100%;border-collapse:collapse;}
+.week-table th{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:6px 10px;text-align:left;border-bottom:1px solid var(--rule);}
+.week-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;font-size:12px;}
+.week-table tr:last-child td{border-bottom:none;}
+.week-table tr.now td{background:rgba(0,233,194,.04);}
+.week-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:rgba(0,233,194,.35);line-height:1;}
+.week-focus{color:#aaa;font-size:11px;line-height:1.4;}
+.cumul{color:var(--muted2);font-size:11px;}
+
+/* ACTIONS */
+.action-item{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start;}
+.action-item:last-child{border-bottom:none;}
+.action-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:rgba(0,233,194,.2);line-height:1;min-width:28px;flex-shrink:0;padding-top:2px;}
+.action-title{font-weight:600;color:var(--cream);font-size:12.5px;margin-bottom:2px;}
+.action-desc{font-size:11px;color:var(--muted2);line-height:1.4;margin-bottom:3px;}
+.action-by{font-size:10px;font-weight:600;}
+
+/* WS TABLE */
+.ws-table{width:100%;border-collapse:collapse;}
+.ws-table th{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:6px 10px;text-align:left;border-bottom:1px solid var(--rule);}
+.ws-table td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;font-size:12px;}
+.ws-table tr:last-child td{border-bottom:none;}
+.ws-table tr:hover td{background:rgba(255,255,255,.01);}
+.ws-name{font-weight:600;color:var(--cream);}
+.ws-note{color:var(--muted2);font-size:11px;}
+
+/* SPEAKERS */
+.speaker-item{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.speaker-item:last-child{border-bottom:none;}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--surface3);border:1px solid var(--cyan-bdr);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--cyan);flex-shrink:0;}
+.speaker-name{font-weight:600;color:var(--cream);font-size:12.5px;}
+.speaker-org{font-size:11px;color:var(--muted2);}
+
+/* NARRATIVE */
+.narrative-step{display:flex;gap:12px;align-items:flex-start;padding:8px 0;}
+.step-n{width:22px;height:22px;border-radius:50%;background:var(--cyan-dim);border:1px solid var(--cyan-bdr);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--cyan);flex-shrink:0;}
+.step-title{font-weight:600;font-size:12px;color:var(--cream);}
+.step-desc{font-size:11px;color:var(--muted2);}
+
+/* STATS */
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.stat-row:last-child{border-bottom:none;}
+.stat-name{color:var(--body);}
+.stat-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--cyan);}
+
+/* HS GRID */
+.hs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.hs-item{background:var(--surface2);border-radius:3px;padding:9px 11px;display:flex;justify-content:space-between;align-items:center;}
+.hs-name{font-size:11px;color:var(--body);}
+.hs-count{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--cyan);}
+
+/* SCROLL */
+.scroll-list{max-height:310px;overflow-y:auto;}
+.scroll-list::-webkit-scrollbar{width:3px;}
+.scroll-list::-webkit-scrollbar-thumb{background:var(--cyan-bdr);border-radius:2px;}
+
+/* ACCOUNTS */
+.accounts-wrap{max-height:500px;overflow-y:auto;}
+.accounts-wrap::-webkit-scrollbar{width:4px;}
+.accounts-wrap::-webkit-scrollbar-thumb{background:var(--cyan-bdr);border-radius:2px;}
+.acc-table{width:100%;border-collapse:collapse;}
+.acc-table th{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:6px 10px;text-align:left;border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--black);z-index:1;}
+.acc-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;font-size:11.5px;}
+.acc-table tr:hover td{background:rgba(0,233,194,.025);}
+.acc-table tr:last-child td{border-bottom:none;}
+.tier-pip{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;}
+.pip-t1{background:var(--cyan);}
+.pip-t2{background:var(--purple);}
+
+/* FILTER */
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.filter-btn{font-family:'Inter',sans-serif;font-size:10px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;padding:5px 14px;border-radius:3px;border:1px solid var(--rule);background:transparent;color:var(--muted2);cursor:pointer;transition:all .15s;}
+.filter-btn:hover,.filter-btn.active{background:var(--cyan-dim);border-color:var(--cyan-bdr);color:var(--cyan);}
+
+/* SPONSOR */
+.sponsor-bar-bg{height:30px;background:var(--surface3);border-radius:3px;overflow:hidden;margin:12px 0 6px;}
+.sponsor-bar-fill{height:100%;background:linear-gradient(90deg,var(--cyan-mid) 0%,var(--cyan) 100%);display:flex;align-items:center;padding-left:12px;font-size:11px;font-weight:600;color:var(--black);white-space:nowrap;}
+.sponsor-amounts{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
+.sponsor-ticks{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);}
+
+/* OWNER GRID */
+.owner-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.owner-card{background:var(--surface2);border-radius:3px;padding:10px 12px;}
+.owner-name{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cyan);margin-bottom:5px;font-weight:600;}
+.owner-accs{font-size:11px;color:var(--body);line-height:1.5;}
+
+/* RETURNEE */
+.ret-item{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.ret-item:last-child{border-bottom:none;}
+.ret-co{font-weight:600;color:var(--cream);font-size:12px;}
+.ret-who{font-size:11px;color:var(--muted2);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="eyebrow">Mapp Fashion · Event Command Centre</div>
+    <div class="event-title">Fashion Decoded 2026</div>
+    <div class="event-meta">180 The Strand, London &nbsp;·&nbsp; Thursday 16 April 2026 &nbsp;·&nbsp; Bi-weekly review cadence</div>
+  </div>
+  <div class="header-right">
+    <div class="cd-num" id="daysLeft">31</div>
+    <div class="cd-sub">Days to event</div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-tab active" onclick="showTab('overview',this)">Overview</button>
+  <button class="nav-tab" onclick="showTab('agenda',this)">Agenda &amp; Speakers</button>
+  <button class="nav-tab" onclick="showTab('registrations',this)">Registrations</button>
+  <button class="nav-tab" onclick="showTab('targets',this)">Target Accounts</button>
+  <button class="nav-tab" onclick="showTab('sponsorship',this)">Sponsorship</button>
+  <button class="nav-tab" onclick="showTab('comms',this)">Media &amp; Comms</button>
+</div>
+
+<div class="content">
+
+<!-- OVERVIEW -->
+<div class="tab-panel active" id="tab-overview">
+  <div class="kpi-row">
+    <div class="kpi c-cyan"><div class="kpi-label">Registered</div><div class="kpi-val cyan">36</div><div class="kpi-sub">of <strong>220</strong> target &nbsp;·&nbsp; 16%</div><div class="kpi-bar"><div class="kpi-bar-fill bar-cyan" style="width:16%"></div></div></div>
+    <div class="kpi c-dim"><div class="kpi-label">Weeks Remaining</div><div class="kpi-val">4.3</div><div class="kpi-sub">Need ~43 new registrations / week</div><div class="kpi-bar"><div class="kpi-bar-fill bar-cyan" style="width:70%"></div></div></div>
+    <div class="kpi c-amber"><div class="kpi-label">Sponsorship</div><div class="kpi-val amber">£38K</div><div class="kpi-sub">Target: £60K &nbsp;·&nbsp; Gap: £22K</div><div class="kpi-bar"><div class="kpi-bar-fill bar-amber" style="width:63%"></div></div></div>
+    <div class="kpi c-purple"><div class="kpi-label">Speakers Confirmed</div><div class="kpi-val purple">8</div><div class="kpi-sub">2 open slots · 1 pending call</div><div class="kpi-bar"><div class="kpi-bar-fill bar-purple" style="width:73%"></div></div></div>
+    <div class="kpi c-cyan"><div class="kpi-label">2025 Attended</div><div class="kpi-val cyan">366</div><div class="kpi-sub">Target 220 = 60% return rate</div><div class="kpi-bar"><div class="kpi-bar-fill bar-cyan" style="width:60%"></div></div></div>
+  </div>
+
+  <div class="alert alert-red"><span class="alert-icon">⚠</span><span><strong>Registration pace is critical.</strong> 36 registered with 31 days to go. New target is 220 (based on 60% return rate from 366 last year). Need ~43 new registrations per week. All-channel push required immediately.</span></div>
+
+  <div class="two-col" style="margin-bottom:18px">
+    <div>
+      <div class="section-title">Weekly Registration Targets <span class="badge badge-red">This Week: +40</span></div>
+      <div class="panel">
+        <table class="week-table">
+          <thead><tr><th>Week</th><th>+Target</th><th>Cumul.</th><th>Primary Focus</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="now"><td style="color:var(--cyan);font-weight:600;font-size:11px">17–21 Mar</td><td><div class="week-n">+40</div></td><td><div class="cumul">→ 76</div></td><td><div class="week-focus">2025 returnee blast · Team email sigs live · Sponsor network push · LinkedIn launch</div></td><td><span class="tag tag-cyan">This Week</span></td></tr>
+            <tr><td style="font-size:11px;color:var(--muted2)">24–28 Mar</td><td><div class="week-n" style="color:rgba(0,233,194,.18)">+45</div></td><td><div class="cumul">→ 121</div></td><td><div class="week-focus">Tier 1 personal outreach · DPI teaser slides on LinkedIn (26 Mar) · DPI report preview</div></td><td><span class="tag tag-muted">Upcoming</span></td></tr>
+            <tr><td style="font-size:11px;color:var(--muted2)">31 Mar–4 Apr</td><td><div class="week-n" style="color:rgba(0,233,194,.18)">+45</div></td><td><div class="cumul">→ 166</div></td><td><div class="week-focus">Tier 2 outreach · Speaker amplification · Sponsor co-promo</div></td><td><span class="tag tag-muted">Upcoming</span></td></tr>
+            <tr><td style="font-size:11px;color:var(--muted2)">7–11 Apr</td><td><div class="week-n" style="color:rgba(0,233,194,.18)">+35</div></td><td><div class="cumul">→ 201</div></td><td><div class="week-focus">Final push · FOMO messaging · Last-chance email</div></td><td><span class="tag tag-muted">Final Push</span></td></tr>
+            <tr><td style="font-size:11px;color:var(--muted2)">14–15 Apr</td><td><div class="week-n" style="color:rgba(0,233,194,.18)">+19</div></td><td><div class="cumul" style="color:var(--cyan)">→ 220 ✓</div></td><td><div class="week-focus">Confirmation logistics · No-show buffer · Final brief prep</div></td><td><span class="tag tag-muted">Close Out</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">This Week — By Fri 21 Mar <span class="badge badge-red">6 Actions</span></div>
+      <div class="panel">
+        <div class="action-item"><div class="action-num">01</div><div><div class="action-title">Send 2025 returnee re-invite</div><div class="action-desc">45 Tier 1/2 contacts attended last year and haven't re-registered. Personalised outreach by account owner — highest-ROI action this week.</div><div class="action-by" style="color:var(--amber)">⚡ Wed 19 Mar — Annarosa + account owners</div></div></div>
+        <div class="action-item"><div class="action-num">02</div><div><div class="action-title">Launch LinkedIn campaign + team UTMs live</div><div class="action-desc">Assets ready. Campaign not live. Every Mappster posts with personal UTM by end of this week. DPI teaser slides go live 26 Mar.</div><div class="action-by" style="color:var(--amber)">⚡ Mon 17 Mar — Annarosa / Lari</div></div></div>
+        <div class="action-item"><div class="action-num">03</div><div><div class="action-title">Confirm Daniel Hulme (pending call)</div><div class="action-desc">If yes: fills AI practitioner slot in sections 4–5. If no: alternative needed immediately.</div><div class="action-by" style="color:var(--red)">⚡ Fri 21 Mar — Sarah</div></div></div>
+        <div class="action-item"><div class="action-num">04</div><div><div class="action-title">Confirm 2 retailer speakers + Profound</div><div class="action-desc">1 luxury slot (Harrods/Selfridges/Mulberry tier) · 1 mass market (M&amp;S/NEXT/ASOS tier). Both needed this week.</div><div class="action-by" style="color:var(--red)">⚡ Fri 21 Mar — Sarah</div></div></div>
+        <div class="action-item"><div class="action-num">05</div><div><div class="action-title">Finalise event title — or proceed without</div><div class="action-desc">Launching as "Fashion Decoded 2026" without final title this week is approved. Title to be added by end of week once agreed.</div><div class="action-by" style="color:var(--cyan)">⚡ By Fri 21 Mar — Sarah</div></div></div>
+        <div class="action-item"><div class="action-num">06</div><div><div class="action-title">Chase sponsor contract sign-off</div><div class="action-desc">Amplience + StoryStream confirmed but logos not live — contracts unsigned. poq status unclear.</div><div class="action-by" style="color:var(--red)">⚡ Tue 18 Mar — Sarah</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">All Workstreams — Current Status</div>
+  <div class="panel">
+    <table class="ws-table">
+      <thead><tr><th style="width:170px">Workstream</th><th>Current State &amp; Next Step</th><th style="width:120px">Owner(s)</th><th style="width:110px">RAG</th></tr></thead>
+      <tbody>
+        <tr><td><div class="ws-name">Event Title</div></td><td><div class="ws-note">Launching without title — can proceed as "Fashion Decoded 2026". Final title to be added by end of week.</div></td><td><div class="ws-note">Sarah</div></td><td><span class="tag tag-cyan">Unblocked</span></td></tr>
+        <tr><td><div class="ws-name">Speaker Lineup</div></td><td><div class="ws-note">8 confirmed · Daniel Hulme pending · 2 open retailer slots (luxury + mass) · Profound TBC</div></td><td><div class="ws-note">Sarah</div></td><td><span class="tag tag-red">This Week</span></td></tr>
+        <tr><td><div class="ws-name">Registrations</div></td><td><div class="ws-note">36 / 220. 2025 returnee email not sent. LinkedIn not live. Need +40 this week.</div></td><td><div class="ws-note">Annarosa</div></td><td><span class="tag tag-red">Critical</span></td></tr>
+        <tr><td><div class="ws-name">Target Account Outreach</div></td><td><div class="ws-note">180 priority UK accounts mapped. HubSpot contacts identified. Outreach sequences needed now.</div></td><td><div class="ws-note">Sales team</div></td><td><span class="tag tag-amber">Start Now</span></td></tr>
+        <tr><td><div class="ws-name">Sponsorship</div></td><td><div class="ws-note">£38K confirmed. Contracts not signed (logos blocked). £22K gap. Need 1–2 more sponsors.</div></td><td><div class="ws-note">Sarah</div></td><td><span class="tag tag-red">Urgent</span></td></tr>
+        <tr><td><div class="ws-name">LinkedIn Campaign</div></td><td><div class="ws-note">Assets ready. Paid not launched. Team UTMs not distributed. DPI teaser campaign scheduled 26 Mar.</div></td><td><div class="ws-note">Annarosa / Lari</div></td><td><span class="tag tag-red">Launch Now</span></td></tr>
+        <tr><td><div class="ws-name">DPI Report</div></td><td><div class="ws-note">Standalone launch moment confirmed. 315 retailers, 25 months data. Placeholders need completing. Teaser content queued for 26 Mar.</div></td><td><div class="ws-note">Sarah / Julie</div></td><td><span class="tag tag-amber">In Progress</span></td></tr>
+        <tr><td><div class="ws-name">Media Assets</div></td><td><div class="ws-note">Email banner + LI graphics ready. Speaker headshots/bios still needed. Sponsor logos pending.</div></td><td><div class="ws-note">Annarosa</div></td><td><span class="tag tag-cyan">Mostly Ready</span></td></tr>
+        <tr><td><div class="ws-name">Logistics / Venue</div></td><td><div class="ws-note">180 The Strand confirmed. Starts 9am. Teams group chat for coordination — details to follow.</div></td><td><div class="ws-note">Annarosa</div></td><td><span class="tag tag-green">On Track</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- AGENDA -->
+<div class="tab-panel" id="tab-agenda">
+  <div class="alert alert-cyan"><span class="alert-icon">ℹ</span><span><strong>Launching without final title.</strong> "Fashion Decoded 2026" is live as working title. Final title to be added by end of week once agreed internally.</span></div>
+  <div class="two-col" style="margin-bottom:16px">
+    <div>
+      <div class="section-title">Confirmed Speakers <span class="badge badge-green">8 confirmed</span></div>
+      <div class="panel">
+        <div class="speaker-item"><div class="avatar">AA</div><div><div style="margin-bottom:3px"><span class="tag tag-cyan">Keynote</span></div><div class="speaker-name">Azeem Azhar</div><div class="speaker-org">Exponential View · Opening keynote</div></div></div>
+        <div class="speaker-item"><div class="avatar">SC</div><div><div style="margin-bottom:3px"><span class="tag tag-purple">Retailer</span></div><div class="speaker-name">Sezin Cagil</div><div class="speaker-org">Dr. Martens</div></div></div>
+        <div class="speaker-item"><div class="avatar">JL</div><div><div style="margin-bottom:3px"><span class="tag tag-purple">Retailer</span></div><div class="speaker-name">Jordan Lustig</div><div class="speaker-org">Ann Taylor</div></div></div>
+        <div class="speaker-item"><div class="avatar">MF</div><div><div style="margin-bottom:3px"><span class="tag tag-muted">Analyst</span></div><div class="speaker-name">Mairi Fairley</div><div class="speaker-org">OC&amp;C Strategy Consultants</div></div></div>
+        <div class="speaker-item"><div class="avatar">PD</div><div><div style="margin-bottom:3px"><span class="tag tag-muted">Tech</span></div><div class="speaker-name">Prakhar Dadhich</div><div class="speaker-org">Google</div></div></div>
+        <div style="border-top:1px solid var(--rule);margin:10px 0 8px;padding-top:8px;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:600">Mapp Internal</div>
+        <div class="speaker-item" style="padding:6px 0"><div class="avatar" style="font-size:11px">JB</div><div><div class="speaker-name">James Brooke</div><div class="speaker-org">CEO, Mapp</div></div></div>
+        <div class="speaker-item" style="padding:6px 0"><div class="avatar" style="font-size:9px">NT</div><div><div class="speaker-name">Natalie Theo &amp; Rachael McAllister</div><div class="speaker-org">Mapp — confirmed</div></div></div>
+        <div class="speaker-item" style="padding:6px 0"><div class="avatar" style="font-size:9px">CTO</div><div><div class="speaker-name">Mapp CTO</div><div class="speaker-org">Mapp — confirmed</div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Open Slots — Close by Fri 21 Mar <span class="badge badge-red">4 pending</span></div>
+      <div class="panel" style="margin-bottom:14px">
+        <div class="action-item"><div class="action-num" style="color:rgba(255,165,0,.3)">?</div><div><div style="margin-bottom:3px"><span class="tag tag-amber">Pending Call</span></div><div class="action-title">Daniel Hulme</div><div class="action-desc">AI practitioner. Fits sections 4–5 (Consequences / Solutions). Brief: link AI decision-making to brand fidelity theme.</div><div class="action-by" style="color:var(--amber)">Decision by Fri 21 Mar — Sarah</div></div></div>
+        <div class="action-item"><div class="action-num" style="color:rgba(255,165,0,.3)">?</div><div><div style="margin-bottom:3px"><span class="tag tag-amber">Pending Scope</span></div><div class="action-title">Profound</div><div class="action-desc">Discovery-section fit (section 3). Role and format TBC. Confirm or rule out this week.</div><div class="action-by" style="color:var(--amber)">Decision by Fri 21 Mar — Sarah</div></div></div>
+        <div class="action-item"><div class="action-num" style="color:rgba(224,64,64,.25)">—</div><div><div style="margin-bottom:3px"><span class="tag tag-red">Open Slot</span></div><div class="action-title">Luxury Retailer Speaker</div><div class="action-desc">Target tier: Harrods, Selfridges, Mulberry, Burberry, Liberty. Section 6 (Practitioner Experience). Head of Digital or above.</div><div class="action-by" style="color:var(--red)">Must confirm Fri 21 Mar</div></div></div>
+        <div class="action-item"><div class="action-num" style="color:rgba(224,64,64,.25)">—</div><div><div style="margin-bottom:3px"><span class="tag tag-red">Open Slot</span></div><div class="action-title">Mass Market Retailer Speaker</div><div class="action-desc">Target tier: M&amp;S, NEXT, ASOS, River Island, Primark. Contrast with luxury slot makes section 6 compelling.</div><div class="action-by" style="color:var(--red)">Must confirm Fri 21 Mar</div></div></div>
+      </div>
+      <div class="section-title">Agenda Arc — 7 Narrative Sections</div>
+      <div class="panel">
+        <div class="narrative-step"><div class="step-n">1</div><div><div class="step-title">Diagnosis</div><div class="step-desc">The crisis defined — brand fidelity, AI, and the discovery problem</div></div></div>
+        <div class="narrative-step"><div class="step-n">2</div><div><div class="step-title">Evidence</div><div class="step-desc">DPI Report: 315 retailers, 25 months of data — standalone launch moment</div></div></div>
+        <div class="narrative-step"><div class="step-n">3</div><div><div class="step-title">Discovery</div><div class="step-desc">How customers find brands in an AI-mediated world — Profound / Google</div></div></div>
+        <div class="narrative-step"><div class="step-n">4</div><div><div class="step-title">Consequences</div><div class="step-desc">What's at stake for fashion retail leadership — OC&amp;C strategic lens</div></div></div>
+        <div class="narrative-step"><div class="step-n">5</div><div><div class="step-title">Solutions</div><div class="step-desc">Technology and strategic responses — sponsors integrated, not siloed</div></div></div>
+        <div class="narrative-step"><div class="step-n">6</div><div><div class="step-title">Practitioner Experience</div><div class="step-desc">Retailer case studies — luxury vs mass market, lived examples</div></div></div>
+        <div class="narrative-step"><div class="step-n">7</div><div><div class="step-title">90-Day Action Plan</div><div class="step-desc">Operational close — what to do Monday morning</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTRATIONS -->
+<div class="tab-panel" id="tab-registrations">
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi c-cyan"><div class="kpi-label">Registered 2026</div><div class="kpi-val cyan">36</div><div class="kpi-sub">16% of 220 target</div><div class="kpi-bar"><div class="kpi-bar-fill bar-cyan" style="width:16%"></div></div></div>
+    <div class="kpi c-dim"><div class="kpi-label">Attended 2025</div><div class="kpi-val">366</div><div class="kpi-sub">Target 220 = 60% return rate</div></div>
+    <div class="kpi c-red"><div class="kpi-label">2025 → 2026 Return</div><div class="kpi-val red">2%</div><div class="kpi-sub">Only 7 returned so far of 366</div><div class="kpi-bar"><div class="kpi-bar-fill bar-red" style="width:2%"></div></div></div>
+    <div class="kpi c-amber"><div class="kpi-label">Priority Returnees</div><div class="kpi-val amber">45</div><div class="kpi-sub">Tier 1/2 contacts not yet back</div></div>
+  </div>
+  <div class="alert alert-cyan"><span class="alert-icon">💡</span><span><strong>Highest-ROI action this week:</strong> 45 contacts from Tier 1/2 accounts attended 2025 but haven't re-registered. Personal outreach — not a bulk email — is the priority. Names listed below.</span></div>
+  <div class="two-col" style="margin-bottom:16px">
+    <div>
+      <div class="section-title">Companies Registered — 2026</div>
+      <div class="panel">
+        <div class="scroll-list">
+          <div class="stat-row"><span class="stat-name">Toast (Mail Order) Limited</span><span class="stat-val">3</span></div>
+          <div class="stat-row"><span class="stat-name">Mountain Warehouse</span><span class="stat-val">2</span></div>
+          <div class="stat-row"><span class="stat-name">Alexander McQueen</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">Primark Limited</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">Mint Velvet</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">John Lewis</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">The Very Group</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">COS</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">TFG Brands</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">Boux Avenue</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">Folk Clothing</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">House of Baukjen</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">Crew Clothing</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name">Lindex</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-name" style="color:var(--muted2);font-style:italic">+ 15 others (non-retailer / agency)</span><span class="stat-val" style="color:var(--muted2)">15</span></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Priority 2025 Returnees — Not Yet Re-registered</div>
+      <div class="panel">
+        <div class="scroll-list">
+          <div class="ret-item"><div class="ret-co">Monsoon Accessorize</div><div class="ret-who">Nick Stowe (CEO) · Anne Johnson · David West (CTO)</div></div>
+          <div class="ret-item"><div class="ret-co">John Lewis &amp; Partners</div><div class="ret-who">Emma Hayward · Siobhan Murray · Charlie Banfield</div></div>
+          <div class="ret-item"><div class="ret-co">The White Company</div><div class="ret-who">Kate Parkinson (Head of Digital CX) · Maria Pickett · Kate Wise</div></div>
+          <div class="ret-item"><div class="ret-co">Harrods</div><div class="ret-who">Chloe Kerner de Lee (Lead Product Mgr) · Arune Daunoraviciute</div></div>
+          <div class="ret-item"><div class="ret-co">JD Sports</div><div class="ret-who">Liz Larkin (JD Own Brand Director)</div></div>
+          <div class="ret-item"><div class="ret-co">Selfridges Group</div><div class="ret-who">Sarah Elmer-Hill (Optimisation Manager)</div></div>
+          <div class="ret-item"><div class="ret-co">ME+EM</div><div class="ret-who">Victoria Carrier (Trading Director) · Bethany Corcoran (Head of Digital Commerce)</div></div>
+          <div class="ret-item"><div class="ret-co">River Island</div><div class="ret-who">Gemma Scarfe (Head of Ecommerce)</div></div>
+          <div class="ret-item"><div class="ret-co">Mulberry England</div><div class="ret-who">Emma Mercier Jones (Global Head of Commercial Excellence)</div></div>
+          <div class="ret-item"><div class="ret-co">Kurt Geiger</div><div class="ret-who">Sarah-Louise Holloway (Digital Operations Manager)</div></div>
+          <div class="ret-item"><div class="ret-co">Sweaty Betty</div><div class="ret-who">Emily Taylor (Senior Global Marketing Manager)</div></div>
+          <div class="ret-item"><div class="ret-co">Crew Clothing</div><div class="ret-who">Raine Peake (Group Digital Director) · Ida Morina · Steven Moriarty</div></div>
+          <div class="ret-item"><div class="ret-co">N Brown Group</div><div class="ret-who">Martin Sheerin (Digital Director)</div></div>
+          <div class="ret-item"><div class="ret-co">Marks &amp; Spencer</div><div class="ret-who">120 HubSpot contacts — check SF campaign for active contacts</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title">HubSpot Contact Coverage — Priority Accounts</div>
+  <div class="panel">
+    <div class="hs-grid">
+      <div class="hs-item"><span class="hs-name">Marks &amp; Spencer</span><span class="hs-count">120</span></div>
+      <div class="hs-item"><span class="hs-name">Harrods</span><span class="hs-count">91</span></div>
+      <div class="hs-item"><span class="hs-name">Burberry</span><span class="hs-count">63</span></div>
+      <div class="hs-item"><span class="hs-name">Sweaty Betty</span><span class="hs-count">50</span></div>
+      <div class="hs-item"><span class="hs-name">ASOS</span><span class="hs-count">71</span></div>
+      <div class="hs-item"><span class="hs-name">NEXT PLC</span><span class="hs-count">73</span></div>
+      <div class="hs-item"><span class="hs-name">N Brown Group</span><span class="hs-count">61</span></div>
+      <div class="hs-item"><span class="hs-name">Primark</span><span class="hs-count">37</span></div>
+      <div class="hs-item"><span class="hs-name">John Lewis</span><span class="hs-count">35</span></div>
+      <div class="hs-item"><span class="hs-name">Selfridges</span><span class="hs-count">35</span></div>
+      <div class="hs-item"><span class="hs-name">River Island</span><span class="hs-count">35+</span></div>
+      <div class="hs-item"><span class="hs-name">Mulberry</span><span class="hs-count">34</span></div>
+      <div class="hs-item"><span class="hs-name">Boden</span><span class="hs-count">31+</span></div>
+      <div class="hs-item"><span class="hs-name">AllSaints</span><span class="hs-count">30+</span></div>
+      <div class="hs-item"><span class="hs-name">New Look</span><span class="hs-count">33</span></div>
+      <div class="hs-item"><span class="hs-name">Liberty London</span><span class="hs-count">27</span></div>
+      <div class="hs-item"><span class="hs-name">JD Sports</span><span class="hs-count">29+</span></div>
+      <div class="hs-item"><span class="hs-name">White Stuff</span><span class="hs-count">23</span></div>
+      <div class="hs-item"><span class="hs-name">Monsoon Accessorize</span><span class="hs-count">19</span></div>
+      <div class="hs-item"><span class="hs-name">Mountain Warehouse</span><span class="hs-count">19</span></div>
+      <div class="hs-item"><span class="hs-name">Frasers Group</span><span class="hs-count">18</span></div>
+      <div class="hs-item"><span class="hs-name">Kurt Geiger</span><span class="hs-count">25</span></div>
+      <div class="hs-item"><span class="hs-name">Mint Velvet</span><span class="hs-count">20</span></div>
+      <div class="hs-item"><span class="hs-name">Roman Originals</span><span class="hs-count">9</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TARGET ACCOUNTS -->
+<div class="tab-panel" id="tab-targets">
+  <div class="alert alert-info"><span class="alert-icon">📋</span><span><strong>180 Priority UK Accounts</strong> from Target Accounts file (Tier 1 + Tier 2) plus additional from ABM Flag Corrections CSV. ✓ = attended Fashion Decoded 2025.</span></div>
+  <div class="filter-row" id="acc-filters">
+    <button class="filter-btn active" onclick="filterAcc('all',this)">All Priority (180)</button>
+    <button class="filter-btn" onclick="filterAcc('t1',this)">Tier 1 — Marquee (91)</button>
+    <button class="filter-btn" onclick="filterAcc('t2',this)">Tier 2 — Strategic (89)</button>
+    <button class="filter-btn" onclick="filterAcc('attended',this)">Attended 2025</button>
+    <button class="filter-btn" onclick="filterAcc('pipeline',this)">Pipeline / Deciding</button>
+    <button class="filter-btn" onclick="filterAcc('luxury',this)">Luxury Accounts</button>
+  </div>
+  <div class="accounts-wrap">
+    <table class="acc-table">
+      <thead><tr><th>Tier</th><th>Account</th><th>Type</th><th style="text-align:center">2025</th></tr></thead>
+      <tbody id="acc-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SPONSORSHIP -->
+<div class="tab-panel" id="tab-sponsorship">
+  <div class="section-title">Sponsorship Progress</div>
+  <div class="panel" style="margin-bottom:18px">
+    <div class="sponsor-amounts"><span style="color:var(--cyan);font-weight:600;font-size:14px">£38,000 confirmed</span><span style="color:var(--muted2)">Target: <strong style="color:var(--cream)">£60,000</strong> &nbsp;·&nbsp; Gap: <strong style="color:var(--red)">£22,000</strong></span></div>
+    <div class="sponsor-bar-bg"><div class="sponsor-bar-fill" style="width:63.3%">£38K confirmed (63%)</div></div>
+    <div class="sponsor-ticks"><span>£0</span><span>£15K</span><span>£30K</span><span style="color:var(--cyan)">← £38K</span><span>£45K</span><span>£60K target</span></div>
+  </div>
+  <div class="three-col" style="margin-bottom:18px">
+    <div class="panel"><div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600">Gold Sponsor · Confirmed</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--cyan);display:inline-block"></span><span style="font-weight:600;font-size:14px;color:var(--cream)">Amplience</span></div><div style="font-size:11px;color:var(--muted2)">Confirmed. Contract not signed — logos blocked on LP. Chase sign-off urgently.</div></div>
+    <div class="panel"><div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600">Gold Sponsor · Confirmed</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--cyan);display:inline-block"></span><span style="font-weight:600;font-size:14px;color:var(--cream)">StoryStream</span></div><div style="font-size:11px;color:var(--muted2)">Confirmed. Contract not signed — logos blocked on LP. Chase sign-off urgently.</div></div>
+    <div class="panel"><div style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600">Partner · Status Unclear</div><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block"></span><span style="font-weight:600;font-size:14px;color:var(--cream)">poq</span></div><div style="font-size:11px;color:var(--muted2)">Listed as confirmed partner in comms. Commercial agreement not formalised. Clarify this week.</div></div>
+  </div>
+  <div class="section-title">To Close the £22K Gap</div>
+  <div class="panel">
+    <div class="action-item"><div class="action-num">01</div><div><div class="action-title">Sign existing contracts immediately</div><div class="action-desc">Amplience and StoryStream logos not live = event looks unfunded. Chase DocuSign this week. Confirmed sponsors can co-promote once logos are live — you're losing their distribution right now.</div><div class="action-by" style="color:var(--red)">⚡ By Tue 18 Mar — Sarah</div></div></div>
+    <div class="action-item"><div class="action-num">02</div><div><div class="action-title">Identify 1–2 additional sponsors at £10–15K</div><div class="action-desc">Likely categories: search/merch platform, personalisation tech, CDP/data, content management. DPI Report offers a "Research Partner" angle — logo on report cover and in section 2. Attractive to data/analytics vendors.</div><div class="action-by" style="color:var(--amber)">Target by end of March</div></div></div>
+    <div class="action-item"><div class="action-num">03</div><div><div class="action-title">Clarify and formalise poq commitment</div><div class="action-desc">Already referenced as a confirmed partner in comms. If commercial: document and get logo live. If content partnership: define contribution (speaker/content/distribution) and brief the team accordingly.</div><div class="action-by" style="color:var(--amber)">⚡ This week</div></div></div>
+  </div>
+</div>
+
+<!-- MEDIA & COMMS -->
+<div class="tab-panel" id="tab-comms">
+  <div class="two-col" style="margin-bottom:16px">
+    <div>
+      <div class="section-title">Assets — Ready &amp; Missing</div>
+      <div class="panel">
+        <div class="action-item"><div><div style="margin-bottom:3px"><span class="tag tag-green">Ready</span></div><div class="action-title">Email Signature Banner</div><div class="action-desc">UTM: https://mapp.news/TdU8f. Should be live for every Mappster now. Copy from Sarah's signature.</div></div></div>
+        <div class="action-item"><div><div style="margin-bottom:3px"><span class="tag tag-green">Ready</span></div><div class="action-title">LinkedIn Graphics (multiple formats)</div><div class="action-desc">Each Mappster uses their personal UTM (Excel file, tab: UTM for Mappsters). Post at least once each before end of this week.</div></div></div>
+        <div class="action-item"><div><div style="margin-bottom:3px"><span class="tag tag-green">Ready</span></div><div class="action-title">LinkedIn Header Banner</div><div class="action-desc">Available for all team members to update their LI profile header immediately.</div></div></div>
+        <div class="action-item"><div><div style="margin-bottom:3px"><span class="tag tag-red">Missing</span></div><div class="action-title">Speaker Headshots &amp; Bios</div><div class="action-desc">Required for LP, event programme, and speaker announcement posts. Chase all 8 confirmed speakers: headshot + 80-word bio + LinkedIn URL.</div></div></div>
+        <div class="action-item"><div><div style="margin-bottom:3px"><span class="tag tag-red">Blocked</span></div><div class="action-title">Sponsor Logos on Landing Page</div><div class="action-desc">Cannot go live until contracts signed (Amplience + StoryStream). Actively damaging event credibility.</div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">LinkedIn Campaign — Audience &amp; Approach</div>
+      <div class="panel" style="margin-bottom:14px">
+        <div class="action-item"><div><div class="action-title">Primary Paid Audience</div><div class="action-desc">Job functions: Digital Director, Head of Ecommerce, CDO, CMO, CTO. Companies: Tier 1 + 2 UK target account list. General campaign launches this week. <strong style="color:var(--cyan)">DPI teaser slides go live 26 March</strong> — data-led creative to drive registrations into w/c 31 Mar push.</div></div></div>
+        <div class="action-item"><div><div class="action-title">Organic — All Mappsters</div><div class="action-desc">Minimum 1 personal post each with event graphic + personal UTM before end of this week. DPI report angle is the strongest hook — data beats "join us".</div></div></div>
+        <div class="action-item"><div><div class="action-title">Speaker Amplification</div><div class="action-desc">Ask all confirmed speakers to share to their networks. Tag them in Mapp posts. Azeem Azhar's reach alone could drive 20+ registrations.</div></div></div>
+        <div class="action-item"><div><div class="action-title">Sponsor Co-Promotion</div><div class="action-desc">Once contracts signed: ask Amplience and StoryStream to announce on their own channels. Both have active fashion retail followings.</div></div></div>
+      </div>
+      <div class="section-title">Personal Outreach — Split by Account Owner</div>
+      <div class="panel">
+        <div class="owner-grid">
+          <div class="owner-card"><div class="owner-name">Joshua Beale</div><div class="owner-accs">NEXT, ASOS, Lacoste, Mountain Warehouse, N Brown, John Lewis, Barbour, AllSaints, New Look, Matalan, Childrensalon</div></div>
+          <div class="owner-card"><div class="owner-name">Lucy Penny</div><div class="owner-accs">JD Sports, Burberry, Alexander McQueen, The Very Group, Primark, River Island, Selfridges, TFG Brands, Boux Avenue, Sweaty Betty</div></div>
+          <div class="owner-card"><div class="owner-name">Patrick Guidi</div><div class="owner-accs">Clarks, END. Clothing, Charles Tyrwhitt, The White Company</div></div>
+          <div class="owner-card"><div class="owner-name">Joseph Butt</div><div class="owner-accs">J. Choo, Fred Perry, Cotswold Outdoor, Mamas &amp; Papas, SportsShoes.com, JoJo Maman Bebe, Finisterre</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  const d=new Date('2026-04-16T09:00:00');
+  const diff=Math.ceil((d-new Date())/86400000);
+  document.getElementById('daysLeft').textContent=diff>0?diff:0;
+})();
+
+function showTab(name,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='targets') renderAcc();
+}
+
+const accounts=[
+  {t:'1',n:'Marks and Spencer',type:'Marquee Enterprise',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'JD Sports',type:'Marquee Enterprise',a25:true,lux:false,stage:'Deciding'},
+  {t:'1',n:'Primark Limited',type:'Marquee Enterprise',a25:true,lux:false,stage:'Pipeline'},
+  {t:'1',n:'NEXT PLC',type:'Marquee Enterprise',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'ASOS',type:'Marquee Enterprise',a25:true,lux:false,stage:'Deciding'},
+  {t:'1',n:'John Lewis & Partners',type:'Marquee Enterprise',a25:true,lux:false,stage:'Identified'},
+  {t:'1',n:'Frasers Group',type:'Marquee Enterprise',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'The Very Group',type:'Marquee Enterprise',a25:false,lux:false,stage:'Pipeline'},
+  {t:'1',n:"Sainsbury's Tu Clothing",type:'Marquee Enterprise',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Asda George',type:'Marquee Enterprise',a25:false,lux:false,stage:'Deciding'},
+  {t:'1',n:'Tommy Hilfiger',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'BESTSELLER',type:'Marquee Fashion Brand',a25:true,lux:false,stage:'Identified'},
+  {t:'1',n:'Hugo Boss UK',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'G-Star RAW',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Lacoste UK',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Uniqlo',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'New Look',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'River Island',type:'Marquee Fashion Brand',a25:true,lux:false,stage:'Identified'},
+  {t:'1',n:'Matalan Retail',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'N Brown Group',type:'Marquee Enterprise',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Barbour',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'AllSaints',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Deciding'},
+  {t:'1',n:'Mint Velvet',type:'Marquee Fashion Brand',a25:true,lux:false,stage:'Pipeline'},
+  {t:'1',n:'Monsoon Accessorize',type:'Strategic Specialist',a25:true,lux:false,stage:'Identified'},
+  {t:'1',n:'Mountain Warehouse',type:'Strategic Specialist',a25:true,lux:false,stage:'Pipeline'},
+  {t:'1',n:'Alexander McQueen',type:'Strategic Luxury',a25:false,lux:true,stage:'Aware'},
+  {t:'1',n:'Burberry',type:'Strategic Luxury',a25:false,lux:true,stage:'Deciding'},
+  {t:'1',n:'Selfridges Group',type:'Strategic Luxury',a25:true,lux:true,stage:'Identified'},
+  {t:'1',n:'Sweaty Betty',type:'Strategic Fashion Brand',a25:true,lux:false,stage:'Identified'},
+  {t:'1',n:'FRED PERRY LTD',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Childrensalon',type:'Marquee Enterprise',a25:false,lux:false,stage:'Deciding'},
+  {t:'1',n:'TFG Brands London',type:'Marquee Fashion Brand',a25:true,lux:false,stage:'Identified'},
+  {t:'1',n:'Boden',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'FGH (Freemans Grattan)',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Fat Face',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'BonMarche',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'French Connection',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'ARKET',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'END. Clothing',type:'Marquee Enterprise',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'The Outnet.com',type:'Strategic Luxury',a25:false,lux:true,stage:'Identified'},
+  {t:'1',n:'Hobbs',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:"Moss Bros.",type:'Strategic Fashion Brand',a25:true,lux:false,stage:'Identified'},
+  {t:'1',n:'Charles Tyrwhitt',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Footasylum',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Pentland Brands',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'GO Outdoors',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'The White Company',type:'Strategic Specialist',a25:true,lux:false,stage:'Deciding'},
+  {t:'1',n:'Clarks',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'1',n:'Hawes and Curtis',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Pipeline'},
+  {t:'1',n:'Roman Originals',type:'Marquee Fashion Brand',a25:true,lux:false,stage:'Identified'},
+  {t:'2',n:'Harrods',type:'Strategic Luxury',a25:true,lux:true,stage:'Pipeline'},
+  {t:'2',n:'Dr. Martens',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Kurt Geiger',type:'Strategic Specialist',a25:true,lux:false,stage:'Identified'},
+  {t:'2',n:'Liberty London',type:'Strategic Luxury',a25:false,lux:true,stage:'Deciding'},
+  {t:'2',n:'Mulberry England',type:'Strategic Luxury',a25:true,lux:true,stage:'Deciding'},
+  {t:'2',n:'Superdry',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'REISS',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Schuh',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Flannels',type:'Strategic Luxury',a25:false,lux:true,stage:'Identified'},
+  {t:'2',n:'Fenwick',type:'Strategic Luxury',a25:false,lux:true,stage:'Identified'},
+  {t:'2',n:'J. Choo Ltd',type:'Strategic Luxury',a25:false,lux:true,stage:'—'},
+  {t:'2',n:'Monica Vinader',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Calvin Klein',type:'Marquee Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'The North Face',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Blacks Outdoor Retail',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Office Holdings',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Mackintosh',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Ann Summers',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'COS',type:'Strategic Fashion Brand',a25:true,lux:false,stage:'Deciding'},
+  {t:'2',n:'Lyle and Scott',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Deciding'},
+  {t:'2',n:'Self Portrait',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Deciding'},
+  {t:'2',n:'Bravissimo',type:'Strategic Specialist',a25:false,lux:false,stage:'Deciding'},
+  {t:'2',n:'Boux Avenue',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Mamas & Papas',type:'Strategic Specialist',a25:false,lux:false,stage:'Aware'},
+  {t:'2',n:'T.M. Lewin',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Dune Group',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'SportsShoes.com',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Rixo',type:'Zone',a25:false,lux:false,stage:'Pipeline'},
+  {t:'2',n:'The Fold London',type:'Zone',a25:false,lux:false,stage:'Pipeline'},
+  {t:'2',n:'Strathberry',type:'Zone',a25:false,lux:true,stage:'Identified'},
+  {t:'2',n:'Adanola',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'House of CB',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Brora Ltd',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Never Fully Dressed',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Rat & Boa',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Pink Boutique',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Long Tall Sally',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Disturbia',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Slaters Menswear',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Joanie Clothing',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Percival Clothing',type:'Zone',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Pour Moi',type:'Strategic Fashion Brand',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Snag Tights',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+  {t:'2',n:'Russell & Bromley',type:'Strategic Specialist',a25:false,lux:false,stage:'Identified'},
+];
+
+let accFilter='all';
+
+function filterAcc(f,btn){
+  accFilter=f;
+  document.querySelectorAll('#acc-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAcc();
+}
+
+function renderAcc(){
+  let data=accounts;
+  if(accFilter==='t1') data=accounts.filter(a=>a.t==='1');
+  else if(accFilter==='t2') data=accounts.filter(a=>a.t==='2');
+  else if(accFilter==='attended') data=accounts.filter(a=>a.a25);
+  else if(accFilter==='pipeline') data=accounts.filter(a=>['Pipeline','Deciding'].includes(a.stage));
+  else if(accFilter==='luxury') data=accounts.filter(a=>a.lux);
+  document.getElementById('acc-body').innerHTML=data.map(a=>`
+    <tr>
+      <td><span class="tier-pip pip-t${a.t}"></span>Tier ${a.t}</td>
+      <td style="font-weight:600;color:var(--cream)">${a.n}</td>
+      <td style="color:var(--muted2);font-size:11px">${a.type}</td>
+      <td style="text-align:center">${a.a25?'<span style="color:var(--cyan);font-size:13px">&#10003;</span>':'<span style="color:var(--surface4)">&#8212;</span>'}</td>
+    </tr>`).join('');
+}
+
+renderAcc();
+</script>
+</body>
+</html>
